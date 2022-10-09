@@ -1,0 +1,622 @@
+<!DOCTYPE HTML>
+<!--
+	I modified this template Strata from HTML5 UP.
+	Many thanks to the author! (html5up.net | @ajlkn)
+
+	Also, I want to express my gratitude to Jianming Dong who provided useful suggestion for my personal page.
+	
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Tutorial: A Very Very Quick Guide for R</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="#" class="image avatar"><img src="images/blog_menu.jpg" alt="menu pic" /></a>
+					<h1><strong><a href="index.html">Home</a></strong><br /></h1>
+					<h1><strong><a href="blog.html">[ Blog ]</a></strong><br /></h1>
+					<h1><strong><a href="talk.html">Talk</a></strong><br /></h1>
+					<h1><strong><a href="research.html">Research</a></strong><br /></h1>
+					<h1><strong><a href="personal_record.html">Personal Record</a></strong><br /></h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- Quick Guide for R -->
+				
+					<section id="top">
+						<h2>Tutorial: A Very Very Quick Guide for R</h2>
+						<p><i>December 15, 2021</i></p>
+						<p>When we first come up with a plan to learn something new, it is more likely for us to keep working toward that goal 
+							if we get positive feedback immediately. Now! The prompt feedback you are looking for when learning R is here! 
+							After reading this article, you surely will be equipped with the ability to start your own project and 
+							the paintbrush to draw a bigger picture. Let's start!</p>
+
+						<section>
+							<li><a href="#setup">Set up</a></li>
+							<li><a href="#where">Where: RStudio</a></li>
+							<li><a href="#what">What: read, hold, and write data</a></li>
+							<li><a href="#how">How: control flow and function</a></li>
+							<br/>
+							<li><a href="#tips">Some tips :-)</a></li>
+							<li><a href="#resou">Resources</a></li>
+						</section>
+						<hr />
+
+						<section id = "setup">
+							<h2><li>Set up</li></h2>
+							<p>Before we start our journey, we should make sure that we have brought enough "water and food". 
+								Downloading the following basic components in advance could prevent you from being stuck in various problems, 
+								such as not having RStudio open or certain packages not working.</p>
+								<ol>
+									<li>R (this is the heart): <a href="https://www.r-project.org/">https://www.r-project.org/</a></li>
+									<li>RStudio (this is a beautiful coat for R): <a href=" https://www.rstudio.com/"> https://www.rstudio.com/</a></li>
+									<li>Rtools (it can provide resources for building packages): <a href="https://cran.r-project.org/bin/windows/Rtools/">https://cran.r-project.org/bin/windows/Rtools/</a></li>
+								</ol>
+
+							
+							
+						</section>
+						<hr />
+
+						<section id = "where">
+							<h2><li>Where: RStudio</li></h2>
+							<p>The first question we need to address is: where can I code? A fast and direct answer is: RStudio. As you can see in the figure on the left side, 
+								the basic R is elegant and simple, but it may be too austere to write codes in an efficient way. Using RStudio can remedy this limitation 
+								with regard to code completion, viewing changes in real-time, etc.</p>
+							<p>When we open the RStudio, we can see four areas: <b>editor window</b> at the top left, <b>working environment / history</b> at the top right, 
+								<b>console window</b> at the bottom left, and <b>files / plots / packages</b> at the bottom right. To capture the function of each area, 
+								you can try to imagine that you are a director who is writing a script for a wonderful play. The editor window is where you write your script; 
+								The working environment is a greenroom for your actors; The console window is a stage where you can enjoy the performance; 
+								The plots are stage photos of your actors. (remember to spell the name of your actors correctly if you want them to perform for you :D)</p>
+							<div class="box alt">
+								<div class="row gtr-50 gtr-uniform">
+									<div class="col-6"><span class="image fit"><img src="images/thumbs/RGUI.jpg" alt="" /></span></div>
+									<div class="col-6"><span class="image fit"><img src="images/thumbs/RSTUDIO.jpg" alt="" /></span></div>
+								</div><p>(1) Left: R Gui. (2) Right: RStudio.</p>
+							</div>
+							<p>Now let's get familiar with RStudio and find out how we can write our first script. 
+								It would be great if you open your RStudio and try to type in the lines below into your editor window.
+							</p>
+							<pre><code># --------------------- get familiar with R ----------------------
+##  run the code
+# 1. If you want to run a single line of code,
+#    you can move the cursor to that location and press: CTRL + ENTER
+#    you can also click "Run" on the top right of this window
+<b>print("Press ctrl + enter to execute this line in the console")</b>
+<b>print("Excellent! You made it!")</b>
+								
+# 2. If you want to run the whole script, you can press: CTRL + ALT + R
+# 3. If you want to rerun the some commands,
+#    you can press the "up" arrows on your keyboard in the console window
+								
+## define variables					
+<b>birth <- 1989</b>          # This symbol <- assigns a value (1989) to a variable (birth)*
+<b>year  <- 2021</b>          # You can press: "ALT" + "-" to obtain it in a quick way
+<b>age   <- year - birth</b>  # You are allowed to create a new variable with the old ones
+								
+# Watch the environment window at the top right! Can you see your actors?
+								
+# You should bear in mind that the four variables listed below are four different objects.
+# (it means that you should pay four salaries for these employees! just kidding)
+<b>object1  <- 1</b>
+<b>Object1  <- 2</b>
+<b>object.1 <- 3</b>
+<b>object_1 <- 4</b>
+								
+# These names are not allowed in R
+<b>1object  <- 1</b>          # It can't start with a number
+<b>object 1 <- 1</b>          # There must be <u>No Space</u> within a name
+								
+# You can fire all your actors with this line (clear the environment)
+<b>rm(list = ls())</b></code></pre>
+                        <p><font size = 2em>*Some people may wonder why not use "birth = 1989"? You can do so because both of them do the same thing. 
+							The main difference between "=" and "<-" is that the former will produce a local variable (like a temporary employee) 
+							while the latter will bring you a global variable (like a permanent employee).</font>
+						</p>
+						</section>
+						<hr />
+
+						<section id = "what">
+							<h2><li>What: read, hold, and write data</li></h2>
+							<p>After knowing where we can code, we cannot wait to figure out what stuff we are going to handle. Basically, as shown in Table 1, 
+								we will encounter Logical, Numeric, Integer, Character, and Factor data (complex and raw data are relatively uncommon).</p>
+							<div class="table-wrapper">
+								<h4>Table 1. How your data may look.</h4>
+								<table><tbody>
+									<tr><td><strong>Type</strong></td>
+										<td><strong>Example</strong></td>
+										<td><strong>Code</strong></td>
+									</tr>
+									<tr><td>Logical</td>
+										<td>TRUE, FALSE</td>
+										<td>var <- FALSE</td>
+									</tr>
+									<tr><td>Numeric</td>
+										<td>1,  299,  2.33,  0.134</td>
+										<td>var <- 2.33</td>
+									</tr>
+									<tr><td>Integer</td>
+										<td>2L,  34L,  0L</td>
+										<td>var <- 666L</td>
+									</tr>
+									<tr><td>Character</td>
+										<td>"Hello"</td>
+										<td>var <- "Hello"</td>
+									</tr>
+									<tr><td>Factor</td>
+										<td>A B C Levels: A B C<br/>
+											A B C Levels: A < B < C</td>
+										<td>var <- factor(c("A", "B", "C"))<br/>
+											var <- factor(c("A", "B", "C"), ordered = T)</td>
+									</tr>
+									<tr><td>Complex</td>
+										<td>3 + 2i</td>
+										<td>var <- 3 + 2i</td>
+									</tr>
+									<tr><td>Raw</td>
+										<td>"Hello" is stored as: 48 65 6c 6c 6f</td>
+										<td>var <- charToRaw("Hello")</td>
+									</tr>
+								</tbody></table>
+							</div>
+							<p>If I only have only one element, like var = 2.33, I can manipulate this element with "var". But if I have thousands of data points, should I create var1, var2, ..., and var1000 to hold my data? 
+								Thanks to R Core Team, we do not have to do so. There are five data structures that can alleviate our burden.</p>
+							<p>(a) Vector. It is one-dimensional, and all data have the same mode (e.g., all are numeric). (b) Matrix. Each data point has two features and the same mode. (c) Array. More than two dimensions and still, all data have the same mode.
+								(d) Data frame. Upgraded version for matrix, being amenable to different modes. (e) List. The ultimate boss or hodge-podge, embracing all kinds of data.</p>
+								<div class="row gtr-50 gtr-uniform">
+									<div class="col-6"><span class="image fit"><img src="images/thumbs/data_stru.jpg" alt="" /></span></div>
+								</div><p>From <i>R in Action</i>, a terrific book detailing almost every aspect of R.</p>
+
+							<pre><code># -------------------- basic data structure ---------------------
+## Here are examples for different modes of data
+<b>logic <- FALSE</b>
+<b>logic <- T</b>
+<b>num <- 2.33</b>
+<b>int <- 666L</b>
+<b>chr <- "Hello"</b>
+<b>fac <- factor(c("A", "B", "C"), ordered = T)</b>     # ordered factor
+<b>fac <- factor(c("male", "female"))</b>               # unordered factor
+
+## Vector: one-dimensional data with the same mode
+<b>num.vector <- c(1, 2, 3)</b>
+<b>chr.vector <- c(1, 2, 3, "four")</b>
+
+# You can create a vector in various way.
+<b>vec.c <- c(1:9)</b>
+<b>vec.seq     <- seq(from = 1, to = 9)</b>
+<b>vec.seq.odd <- seq(from = 1, to = 9, by = 2)</b>
+<b>vec.rep     <- rep(c(1:9), times = 2)</b>
+<b>rep(c(1:9), each = 2)</b>
+
+# You can select a particular element in your vector with [ ]
+<b>vec.rep[3]</b>
+
+## Matrix: two-dimensional data with the same mode
+## (noted that each colomn should contain the same length of elements)
+<b>mat.col <- matrix(data = c(1:9), nrow = 3, ncol = 3)</b>              # the default setting is to fill the matrix by columns
+<b>mat.row <- matrix(data = c(1:9), nrow = 3, ncol = 3, byrow = T)</b>   # you can change the setting to fill it by rows
+
+# You can refer to the element in row x and colomn y with [x, y]
+# Also, you can identify the <i>x</i>th row or <i>y</i>th colomn with [x, ] / [, y]
+<b>mat.row[2, 3]</b>
+<b>mat.row[2, ]</b>
+<b>mat.row[, 3]</b>
+
+## Array: for high dimensional data
+
+# Here is an example for three-dimensional data
+<b>arr <- array(c(1:18), c(3, 3, 2))</b>
+<b>arr</b>
+
+# The extraction for array is similar with Matrix
+# (Let's try to figure out which number is corresponding to the height :D)
+<b>arr[2, 3, 2]</b>
+
+## Date.frame: it can hold different modes of data (one- or two-dimensional). Each colomn should contain the same length of elements.
+## (it will be the most regular structure you will use)
+<b>participant <- data.frame(</b>
+<b>                          ID  = c("sub_01", "sub_02", "sub_03", "sub_04"),</b>
+<b>                          age = c(20, 21, 20, NA),</b>
+<b>                          gender = factor(c("M", "F", "M", "F")),</b>
+<b>                          treatment = c(F, F, T, T)</b>
+<b>                          )</b>
+<b>participant</b>
+
+# The extraction for data frame is also similar with Matrix
+<b>participant[1, 2]</b>
+<b>participant[1, ]</b>
+<b>participant$age</b>
+
+## List: it is so flexible that you can include everything here.
+## (the length of element is also free)
+<b>listdata <- list(logic, num, chr, vec.c, mat.col, participant)</b>
+<b>listdata</b>
+<b>listdata[[5]][2, 3]</b></code></pre>
+
+                        <p>Now you surely have known how to "type in" your data by hand, you can also import your data into R directly from other sources. 
+							What is more, after analyzing your data, you may want to store your results timely. Rest assured, it is as simple as getting an elephant in a fridge. 
+							So, let's move on to see how to achieve this!</p>
+						
+						<pre><code># ---------------------- read and write data -----------------------
+## The fist step: know your working dictionary
+<b>getwd()</b>
+<b>setwd("D:/Rwork")</b>     # You should use a slash "/" instead of a backslash "\"
+<b>getwd()</b>
+
+## The second step: read your data
+
+# 1. You can realize this goal using <u>read.XXX</u>
+<b>response <- read.csv(file = "response_matrix.csv")</b>
+
+# 2. You can also click the "import Dateset" at the top right
+#    or "files" at the bottom right
+
+## The third step: write your data
+<b>write.csv(x = participant, file = "participant.csv")</b>
+
+# This package can be used to read and write data from EXCEL
+<b>install.packages("openxlsx")</b>
+<b>library(openxlsx)</b>
+<b>exceldata <- read.xlsx(xlsxFile = "DataExample.xlsx")</b>
+<b>write.xlsx(x = exceldata[, -1], file = "DataExample_minver.xlsx")</b>
+
+# This package can be used to read and write data from SPSS
+<b>install.packages("haven")</b>
+<b>library(haven)</b>
+<b>spssdata <- read_sav(file = "DataExample_SPSS.sav")</b>
+<b>write_sav(data = na.omit(spssdata), path = "DataExample_SPSS_cleanver.sav")</b>
+						</code></pre><p>(The example data can be downloaded <a href="talk/datademo.zip">here</a>.)</p>
+						</section>
+						<hr />
+
+						<section id = "how">
+							<h2><li>How: control flow and function</li></h2>
+							<p><i>Congratulations</i> to you! You have the knowledge of RStudio and can employ your own data onto it (you are extremely close to success)! 
+								Since we have put our data in R, the final question awaited to be answered is: how can we analyze our data? Here we come to the core part of our codes. 
+								We will first cut our teeth in trying to do some basic operations on our data, and then we will go through two fundamental components (i.e., control flow and function) you will need when you do your own programming. 
+								Let's move ahead on our journey!</p>
+							<p>The first part is to get warm up by learning some basic operators in R. It would be a great notion to meet some actors we created before. 
+								Run the codes below and reveal the output by yourself.
+							</p>
+							<pre><code># -------------------- basic operations ---------------------
+
+## Arithmetic operators
+<b>1 + 1</b>       # add
+<b>1 - 1</b>       # subtract
+<b>2 * 2</b>       # multiply
+<b>3 / 3</b>       # divide
+<b>4 ^ 4</b>       # power
+<b>4 ** 4</b>      # power
+<b>5 %% 3</b>      # remainder
+<b>5 %/% 3</b>     # integer division
+
+<b>vec.rep</b>
+<b>vec.rep + 1</b>
+<b>vec.rep * 2</b>
+
+# When adding two vectors with different lengths, if the length of the longer one is an integral multiple of the shorter one,
+# R will repeat the shorter vector for you.
+<b>vec.rep + c(1, 2, 3)</b>
+# But if the longer one's length is not a multiple of the other, there will be an error.
+<b>vec.rep + c(1, 2, 3, 4)</b>
+
+<b>mat.row</b>
+<b>mat.row * mat.row</b>        # multiplying the corresponding elements in each matrix
+<b>mat.row %*% mat.row</b>      # matrix multiplication
+<b>rowMeans(mat.row)</b>        # compute row mean: (1+2+3)/3
+<b>colMeans(mat.row)</b>        # compute column mean: (1+4+7)/3
+
+## Logical operators
+<b>2 > 1</b>
+<b>2 < 1</b>
+<b>2 == 1</b>         # strictly equal to
+<b>2 != 1</b>         # not equal to
+<b>2 >= 2</b>         # greater than or equal to
+
+<b>c(1,2,3) == 1</b>
+<b>c(1,2,3) == c(1,2,3)</b>
+
+<b>(2>1) & (3>1)</b>  # and
+<b>(2>1) & (1>3)</b>
+
+<b>(2>1) | (3>1)</b>  # or
+<b>(2>1) | (1>3)</b>
+
+# For "&&" and "||", they will immediately move further once the statement is decisive enought.
+<b>if(FALSE && print(1)) {print(2)} else {print(3)}</b>      # Command "print(1)" will be skipped
+<b>if(FALSE &  print(1)) {print(2)} else {print(3)}</b>
+
+<b>if(TRUE || print(1)) {print(2)} else {print(3)}</b>       # Command "print(1)" will be skipped
+<b>if(TRUE |  print(1)) {print(2)} else {print(3)}</b>
+							</code></pre>
+
+							<p>Now comes the second part. So far, we have our actors right on the stage, 
+								and we can organize the play we wrote step-by-step by executing our script from the top to the bottom. 
+								The appearance of our actors, however, may be more flexible instead of being presented in a plain and flat way. 
+								Some actors may appear only when certain music is cued while some actors may need to show up over and over again during the first movement.</p>
+							<p>In other words, rather than allowing your codes to flow naturally, in some cases, you may want to designate a direction if some conditions are met, 
+								or require a circulating flow. Consequently, the question then becomes: how can we control the flow of our codes? 
+								Two powerful constructs, conditional execution and looping, are readily harnessed to satisfy our ambition.</p>
+							
+
+							<pre><code># ---------------------- conditional execution -----------------------
+## if statements
+
+# if a given condition is true, this control structure will execute a statement you assigned
+<b>input <- 3</b>
+<b>if(input%%2 == 0){</b>                 # This is the condition needed to be tested
+<b>  print("It is an even.")</b>          # R will execute this line if the condition is met
+<b>}</b>
+
+<b>if(input%%2 == 0){</b>
+<b>  print("It is an even.")</b>
+<b>}else{</b>                             # R will execute this part if the condition is not met
+<b>  print("It is an odd.")</b>           # You can omit this part if you do not need it as in the former example
+<b>}</b>
+
+<b>input <- 3.4</b>
+<b>if(input%%2 == 0){</b>
+<b>  print("It is an even.")</b>
+<b>}else if(input%%2 == 1){</b>           # More detailed conditions can be included in this way
+<b>  print("It is an odd.")</b>
+<b>}else{</b>
+<b>  print("It is not an integer.")</b>
+<b>}</b>
+
+# You can apply "ifelse" when you want to enter more than one element
+<b>input <- c(3, 4)</b>
+<b>ifelse(test = (input%%2 == 0),</b>
+<b>       yes = "It is an even.",</b>
+<b>       no = "It is an odd.")</b>
+
+## The do's and don'ts
+# 1. If you have multiple conditions, please always ensure them to be mutually exclusive.
+# 2. Please always try to enter different inputs to check whether you can get the desired output.
+
+
+# ---------------------- repetition and looping -----------------------
+## for: You know where is the end
+
+# When you want to execute a statement repetitively, it would be tedious to enter the same codes over and over again.
+# If you have a sequence defining how many times R should execute your statement, the for-loop structure is advisable.
+<b>for (i in 1:5){</b>                # R will run through i = 1, i = 2, ..., i = 5
+<b>  print(i)</b>                     # then, the i value will be printed out in each run; that is, this line will be processed 5 times
+<b>}</b>
+
+<b>for (i in c("A", "B", "C")){</b>   # the sequence you want to go through can also be a vector of characters
+<b>  print(i)</b>
+<b>}</b>
+
+## while: You have no idea about where is the end, but you do know what would be the time to stop
+
+# If you do not know the exact sequence, but you incline to terminate the loop at a specific point, the while-loop structure is recommended.
+# While loop can help you to execute the same statements until the condition is not met.
+<b>i <- 1</b>                         # this is a counter
+<b>while(i < 6){</b>                  # when the condition in the parenthesis is TRUE, R will keep executing the next statements in the brackets
+<b>  print(i)</b>                     # that is, R will keep printing out i if i is less than 6
+<b>  i <- i + 1</b>                   # also, the value of i will be increased by one after each run
+<b>}</b>                              # this cycle will reach its end when i is lager than or equal to 6
+
+## The do's and don'ts
+# 1. You must make sure that there is an end point for while-loop, if not, it will keep going until reaching the end of the earth.
+# 2. Looping constructs are the most time-consuming part of your program, you can try to replace them with "apply" function.
+#    (It would be a long story so I am not going to cover this function here. Instead, you can Google "apply in R" to see more details).
+							</code></pre>
+
+							<p>Another fundamental component you will need in the journey is function. R has a gamut of packages containing diverse functions to help you realize your analysis of data. 
+								More importantly, you can even build your own function to carry out what you want personally! Let's see how to do so.
+							</p>
+
+							<pre><code># ---------------------- function -----------------------
+## How to use packages?
+
+# The first step is to install packages if you haven't included them in R before.
+<b>install.packages("swirl")</b>        # This is a marvelous package to <u>learn R in R</u>. I went through all sections in swirl when I learned R by myself.
+<b>install.packages("ggplot2")</b>      # This is a powerful package to visualize your data.
+
+# The second step is to load the package, and then the functions attached will be accessible.
+<b>library(ggplot2)</b>
+
+# When you encounters a problem, you can ask for help in these way:
+# 1. It is really helpful to view the R document including the description, usage, examples, or other details of the package.
+<b>?ggplot2</b>                         # Typing in a question mark before the package you want to get more information.
+<b>help("ggplot2")</b>                  # You can also use the "help" function.
+<b>help("apply")</b>
+
+# 2. Another option is to search the help system if you cannot remember the exact name or want to receive the related information.
+<b>??ggplo</b>                          # Typing in two question marks to call the help system.
+<b>help.search("ggplo")</b>             # Or using the "help.search" function.
+
+
+## How to introduce your own function?
+
+# The main features:
+# Say you would like to write a function praising someone.
+<b>praise <- function(yourname){</b>                                         # The objects used in the function should be included here. Note that these objects are local to the function, so you will not see them in the global environment.
+  # A function that prasies a specific person (You should annotate the purpose and usage of your function)
+<b>  print(paste(yourname, "is the best person I have ever met!"))</b>       # This statement will give you a compliment.
+<b>}</b>
+<b>praise(yourname = "Taylor")</b>                                           # Now try this example in your R, replacing the input with your name!
+
+# Next we move on to a more complex example.
+# If your object always has the same value, you can include it as a default value.
+<b>praise <- function(yourname, agree = T){</b>                              # Say we always agree that the name you input is a great person.
+<b>  print(paste(yourname, "is the best person I have ever met!"))</b>
+<b>  if (agree == T){</b>                                                    # In this case, we should evaluate whether the value you enter is met with your default value.
+<b>    print("I think so!")</b>                                              # If the condition is TRUE, we should expect that this statement to be printed.
+<b>  }else{</b>
+<b>    print("Beyoncé is the best!")</b>                                     # Otherwise, this line will be printed.
+<b>  }</b>
+<b>}</b>
+<b>praise(yourname = "Taylor")</b>                                           # Now let's run this function with the default value.
+<b>praise(yourname = "Taylor", agree = F)</b>                                # Changing the default value to figure out what would happen.
+
+# Here is a more realistic example, and you can write your function to calculate the variables you want!
+<b>likf <- function(th, re, a, b, D = 1.702) {</b>     # Covering all objects here, and their name should be meaningful (it is usually an abbreviation of the full name). Here th = theta, re = response.
+  # This is a function calculating an examinee's likelihood.
+<b>  pi <- 1 /(1 + exp(-D * a * (th - b)))</b>         # This is a formula to calculate the probability of a correct answer.
+<b>  li <- prod(pi^re * (1 - pi)^(1 - re))</b>         # "prod" returns the product of all the values in its arguments.
+<b>  return(li)</b>                                    # Noticed that R will not print out the results if you do not ask for them, so you should like to use the "return" function or simply type in "li" at the end.
+<b>}</b>
+
+# Now try to run this example.
+<b>th <- 1</b>
+<b>re <- c(1, 1, 0, 1)</b>
+<b>a <- c(0.8, 0.9, 0.5, 0.9)</b>
+<b>b <- c(0.5, 0.4, 1, 0.6)</b>
+<b>likf(th, re, a, b)</b>
+
+## The do's and don'ts
+# 1. You should include all objects used in the function within the parenthesis.
+     Never trying to use objects from the global environment, though it works sometimes.
+     This behavior will give you unexpected errors when you unintentionally miss something.
+# 2. If you want to output more than one result or a value produced in the middle of the statements, you need to use the "return" function to tell R what you want;
+     otherwise, R will only give you the last value produced in the statement.
+# 3. If you do not point out the variables you input should be what object in the function, please arrange your variables in the same order as the function defined.
+<b>likf(re, th, a, b)</b>                              # This will give you a wrong number as R confuses the object th with "re" and the object re with "th"!
+<b>likf(re = re, th = th, a = a, b = b)</b>            # The confusion will be eliminated if you clarify the name of each object, so I recommend you always do so.
+# 4. It is always instructive and advisable to view the function in the package you intend to use.
+     You can gain a clear picture of the underlying codes of that function, and you can learn from the codes too!
+<b>install.packages("cacIRT")</b>                      # This is a package used to calculate classification accuracy and consistency.
+<b>library(cacIRT)</b>                                 # Thanks very much for Dr. Quinn N. Lathrop (2014)'s excellent job!
+<b>Rud.P</b>                                           # You can scrutinize the codes of a function by taking out the parenthesis, that is, from "Rud.P()" to "Rud.P".
+							</code></pre>
+
+							<p><i>You have reached a milestone</i>! All your data are well introduced to R, and you have a full-fledged programming structure. Your actors are ready for the show and the stage has been set up well. 
+								Before the show, we can involve some excellent sound and lighting effects: visualization. A clear and eye-catching plot is rewarding and can help clarify your results.
+							</p>
+							<p>Let's take a look at two examples, and the resulting graphs are provided at the end of this section.</p>
+
+							<pre><code># ----------------------- visualization ------------------------
+## Using "plot" to draw a scatter plot for estimates and true values!
+<b>theta  <- rnorm(1000)</b>
+<b>est.th <- theta + rnorm(1000, 0, 0.5)</b>
+<b>plot(theta, est.th)</b>
+
+# You can make it prettier by adjusting a broad selection of parameters
+<b>plot(theta, est.th,</b>
+<b>     col = rgb(0.4, 0.4, 0.8, 0.6),</b>             # change the color of your points
+<b>     pch = 16,</b>                                  # choose specific symbol (or shape)
+<b>     cex = 1.3,</b>                                 # size of the scatter point
+<b>     cex.lab = 1.5,</b>                             # size of the axis label text
+<b>     cex.axis = 1.5,</b>                            # size of the numbers on the tick marks
+<b>     family = "sans",</b>                           # font style
+<b>     xlab = "true θ", ylab = "estimated θ",</b>     # the label of x-axis and y-axis
+<b>     xlim = c(-3.5, 3.5), ylim = c(-3.5, 3.5))</b>  # control the range of x-axis and y-axis
+<b>reg <- lm(est.th ~ theta)</b>
+<b>abline(reg,</b>
+<b>       lty = 1,</b>           # type of line
+<b>       lwd = 2,</b>           # width of line
+<b>       col = "red")</b>       # color of line
+
+## Now let us try to draw with ggplot2!
+<b>library(ggplot2)</b>
+
+# Initially, we should put our data in data.frame
+<b>ggplotdata <- data.frame(true = theta,</b>
+<b>                         estimated = est.th)</b>
+
+# Then, we can call ggplot
+<b>ggplot(ggplotdata, aes(x = true, y = estimated)) +</b>        # tell ggplot what data you would like to plot
+<b>       geom_point(col = rgb(0.4, 0.4, 0.8, 0.6)) +</b>        # draw a scatter plot and define a color for the points
+<b>       geom_smooth(method = lm, color = "red", se = F)</b>    # draw a regression line for your data points
+</code></pre>
+						<div class="box alt">
+							<div class="row gtr-50 gtr-uniform">
+								<div class="col-6"><span class="image fit"><img src="images/thumbs/plot1.png" alt="" /></span></div>
+								<div class="col-6"><span class="image fit"><img src="images/thumbs/plot2.png" alt="" /></span></div>
+							</div><p>(1) Left: example 1 using standard plotting. (2) Right: example 2 using ggplot2.
+								<br/>
+								(And now you may realize that it is important for us to adjust some parameters to adorn our graphs.)
+							</p>
+						</div>
+
+							<p>Finally! You are a qualified R programmer from this moment! In previous sections, you have been familiar with the layout of RStudio and have found out how to execute your codes in R. 
+								Then, you are capable of importing and storing the data. More importantly, you can proceed well with the conditional and looping structures and are not limited to the existing functions! 
+								Since you have captured the whole framework, it is time for you to add more details to your own picture.</p>
+							<p>In addition, I have prepared some practical recommendations and resources to help you enjoy your R journey.</p>
+						</section>
+						<hr />
+
+						<section id = "tips">
+							<h2><li>Some tips :-)</li></h2>
+							<ol>
+								<li>Always annotating your codes is a priceless merit. Also, you can turn codes into comments through <u>Ctrl + shift + C</u>.</li>
+								<li>The primary goal for all language is to communicate and share meaning, and computer language is no exception. 
+									So, naming your variables or files with substantial meaning is important.</li>
+								<li>A block structure helps shape a brisk coding experience.</li>
+								<li>A processing bar can mollify your agitated mind during the long run time of the program.</li>
+							</ol>
+							<div class="box alt">
+								<div class="row gtr-50 gtr-uniform">
+									<div class="col-4"><span class="image fit"><img src="images/thumbs/name.jpg" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/thumbs/block.jpg" alt="" /></span></div>
+									<div class="col-4"><span class="image fit"><img src="images/thumbs/bar.jpg" alt="" /></span></div>
+								</div>
+							</div>
+						</section>
+						<hr />
+
+						<section id = "resou">
+							<h2><li>Resources</li></h2>
+							<ol>
+								<li>The powerful R document: <a href="https://www.rdocumentation.org/">https://www.rdocumentation.org/</a></li>
+								<li>This page will answer 99% of your questions: <a href="https://stackoverflow.com/">https://stackoverflow.com/</a></li>
+								<li>Here are great codes to help you visualize your data: <a href="https://www.r-graph-gallery.com/">https://www.r-graph-gallery.com/</a></li>
+								<li>Following stylistic guidelines can make your code readable: <a href="http://adv-r.had.co.nz/Style.html">http://adv-r.had.co.nz/Style.html</a></li>
+								<li><a href="https://www.google.com/"><strong>Google</strong></a> is your faithful friend!</li>
+							</ol>
+						</section>
+
+
+						<br/>
+						<br/>
+
+						<ul class="actions">
+							<li><a href="ggplot_Codes.html" class="button primary">&larr; Previous</a></li>
+							<li><a href="CAT_RT_demo.html" class="button">Next &rarr;</a></li>
+						</ul>
+
+						
+
+					</section>
+				
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="contact">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://twitter.com/HuangYingshi" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://github.com/quantithinker-yingshi" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto:h_yingshi@mail.bnu.edu.cn" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>E-mail: h_yingshi@mail.bnu.edu.cn<br />
+							<br />
+						&copy; 2022 Yingshi</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

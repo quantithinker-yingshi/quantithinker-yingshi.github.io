@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<!--
+	I modified this template Strata from HTML5 UP.
+	Many thanks to the author! (html5up.net | @ajlkn)
+
+	Also, I want to express my gratitude to Jianming Dong who provided useful suggestion for my personal page.
+	
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Maximum Likelihood Estimation of Examinees' Ability Using Newton's Method</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="#" class="image avatar"><img src="images/blog_menu.jpg" alt="menu pic" /></a>
+					<h1><strong><a href="index.html">Home</a></strong><br /></h1>
+					<h1><strong><a href="blog.html">[ Blog ]</a></strong><br /></h1>
+					<h1><strong><a href="talk.html">Talk</a></strong><br /></h1>
+					<h1><strong><a href="research.html">Research</a></strong><br /></h1>
+					<h1><strong><a href="personal_record.html">Personal Record</a></strong><br /></h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- Four -->
+				
+					<section id="top">
+						<h2>Maximum Likelihood Estimation of Examinees' Ability Using Newton's Method</h2>
+						<p><i>December 01, 2020</i></p>
+						<p>Obtaining the examinee's ability estimate is always the very first step for a psychometrician to move further, 
+							for example, servicing for the selection of the next item during the process of online calibration or adaptive testing. 
+							In this article, a detailed description of R codes for maximum likelihood estimation using Newton-Raphson 
+							accompanied by the implementation of the downhill algorithm is presented. With these codes, 
+							you can easily use them to estimate your own theta with your item parameters!</p>
+
+						<p>The MLE with the downhill algorithm will be illustrated within the framework of two-parameter logistic item response model (2PLM), 
+							so you will learn how to:
+							<br/>
+						<li>estimate theta with known item parameters (2PLM);</li>
+						<li>compute bias and RMSE for estimated theta and true theta;</li>
+						<li>also, you can download the example data <a href="example_data_MLE.zip">here</a>.</li></p>
+
+						<hr />
+
+						<section id = "framework">
+							<h2><li>The project framework</li></h2>
+
+							<li>Define function</li>
+								<ol>
+									<li>function1: <u>Newtons</u>, Newton-Raphson method of theta estimation for 2PLM 
+										(with the implement of downhill algorithm)</li>
+									<li>function2: <u>GridSearch</u>, Grid-Search method of theta estimation for 2PLM 
+										(an option for the estimation of score of 0 or full scores)</li></ol>
+							<li>Main body
+								<br/>the estimation main body (with boundary manipulation)</li>
+								<br/>
+							<li>Results</li>
+								<ol>
+									<li>plot estimate theta results</li>
+									<li>save results</li>
+									<li>return bias, RMSE and timecost to the console</li>
+								</ol>
+						</section>
+						<hr />
+
+						<section>
+							<h2><li>MLE with the downhill algorithm</li></h2>
+
+							<p>Before we get started, it would be a good idea to clean our environment, record the starting time point, and set our working directory.</p>
+
+							<pre><code><b>rm(list = ls())</b>
+<b>time.start <- Sys.time()</b>
+
+# library packages ----------------------------------------
+## This package can help you to produce gorgeous graphs
+<b>library(ggplot2)</b>
+
+# set working directory -----------------------------------
+<b>setwd("C:/Users/HYS/Desktop")</b>         ## You need to modify to your WD</code></pre>
+
+							<p>Next, let's take a close look at the core functions.</p>
+
+							<pre><code># define functions ----------------------------------------
+<b>Newtons <- function(theta0, response, a, b, D = 1.702, lamda = 1, ep = 1e-08, maxiter = 500){</b>
+  ## Newton-Raphson method of theta estimation for 2PLM
+  <b>th <- theta0</b>
+  <b>re <- response</b>
+  <b>niter <- 0</b>
+  <b>delta <- ep + 1</b>
+
+  <b>while (delta >= ep && niter <= maxiter) {</b>
+    <b>niter <- niter + 1</b>
+    
+    ## 2PL model
+    <b>Pi <- 1 /(1 + exp(-D * a * (th - b)))</b>
+    <b>Pi[Pi == 0] <- 1e-10</b>
+    <b>Pi[Pi == 1] <- 1 - 1e-10</b>
+    <b>Q <- 1 - Pi</b>
+    <b>fx <- sum(D * a * (re - Pi))</b>       # first derivative, i.e., g(θ)
+    <b>dfx <- -D^2 * sum(a^2 * Pi * Q)</b>    # second derivative, i.e., g'(θ)
+    
+    ## detect if the slope is zero
+    <b>if (dfx == 0) {</b>
+      <b>warning("Slope is zero!")</b>
+      <b>break</b>
+    <b>}</b>
+
+    <b>delta <- lamda * fx/dfx</b>
+    
+    ## implement the downhill algorithm
+    <b>j <- 0</b>
+    <b>Pi1 <- 1 /(1 + exp(-D * a * (th - delta - b)))</b>
+    <b>fx1 <- sum(D * a * (re - Pi1))</b>     # compute g(θk+1)
+    <b>fx0 <- fx</b>                          # compute g(θk)
+    <b>while (abs(fx1) >= abs(fx0)) {</b>
+      <b>j <- j + 1</b>
+      <b>lamda <- lamda/(2^j)</b>
+      <b>delta <- lamda * fx/dfx</b>
+      <b>Pi1 <- 1 /(1 + exp(-D * a * (th - delta - b)))</b>
+      <b>fx1 <- sum(D * a * (re - Pi1))</b>
+    <b>}</b>
+    
+    <b>th <- th - delta</b>
+  <b>}</b>
+  
+  ## detect the misconvergence
+  <b>if (niter > maxiter) {</b>
+    <b>warning("Maximum number of iterations was reached.")</b>
+  <b>}</b>
+  <b>return(list(root = th, niter = niter, estim.prec = delta))</b>
+<b>}</b>
+
+<b>GridSearch <- function(response, a, b, D = 1.702, upper = 4, lower = -4, stepsize = 1e-03){</b>
+  ## Grid-Search method of theta estimation for 2PLM
+  <b>th <- seq(from = lower, to = upper, by = stepsize)</b>
+  <b>np = length(th)</b>
+  
+  ## compute log-likelihood function
+  <b>logf <- function(x, r, a, b, D) {</b>
+    <b>pi = 1/(1 + exp(-D * a * (x - b)))</b>
+    <b>ll = r * log(pi) + (1 - r) * log(1 - pi)</b>
+    <b>lf = sum(ll)</b>
+    <b>return(lf)</b>
+  <b>}</b>
+  
+  ## for each theta in [lower, upper]
+  <b>lnL <- sapply(1:np, function(i){</b>
+    <b>logf(x = th[i], r = response, a = a, b = b, D = D)</b>
+  <b>})</b>
+  <b>th <- th[order(lnL, decreasing = TRUE)]</b>
+  <b>estth <- th[1]</b>
+<b>}</b>
+							</code></pre>
+
+							<p>Are you ready for estimating our example data? Here we go!</p>
+
+							<pre><code># main body -----------------------------------------------
+## read data
+<b>response <- read.table("response_matrix.txt")</b>
+<b>theta    <- read.table("theta_parameter.txt")</b>
+<b>itemPara <- read.table("item_parameter.txt")</b>
+
+## set variables
+<b>D <- 1.702</b>
+<b>lamda <- 1</b>
+<b>upper <- 4</b>
+<b>lower <- -4</b>
+<b>epsilon <- 1e-08</b>
+<b>maxiter <- 1000</b>
+<b>stepsize <- 1e-05</b>
+
+## estimate theta for all examinees
+<b>a <- itemPara[, 1]</b>
+<b>b <- itemPara[, 2]</b>
+<b>nperson <- dim(response)[1]</b>
+<b>nitem   <- dim(itemPara)[1]</b>
+
+<b>est.th <- array(data = NA, dim = nperson)</b>
+<b>for (i in 1:nperson) {</b>
+  <b>score <- sum(response[i, ])</b>
+  
+  ## check score of 0 or full scores
+  <b>if(score == 0) {</b>
+    <b>est.th[i] <- -3</b>
+    ## if we want to use the Grid-Search method, that is:
+    ## est.th[i] <- GridSearch(response = response[i, ], a = a, b = b, D = D,
+    ##                         upper = upper, lower = lower, stepsize = stepsize)
+  <b>}else if (score == nitem){</b>
+    <b>est.th[i] <- 3</b>
+  <b>}else{</b>
+    <b>theta0 = log((score) / (nitem - score))</b>
+    <b>est.th[i] <- Newtons(theta0 = theta0, response = response[i, ], a = a, b = b, D = D,</b>
+                         <b>lamda = lamda, ep = epsilon, maxiter = maxiter)$root</b>
+  <b>}</b>
+  
+  ## boundary manipulation
+  <b>if(est.th[i] > upper) {</b>
+    <b>est.th[i] <- upper</b>
+    <b>print(paste("The ", i, "th estimated theta is out of range.", sep = ""))</b>
+  <b>}else if (est.th[i] < lower) {</b></lower>
+    <b>est.th[i] <- lower</b>
+    <b>print(paste("The ", i, "th estimated theta is out of range.", sep = ""))</b>
+  <b>}</b>
+  
+  ## progress bar
+  <b>print(paste("Finish: ", sprintf(fmt = '%0.1f', i/nperson * 100), "% for ",</b>
+              <b>nperson, " examinees.", sep = ""))</b>
+<b>}</b>
+
+## compute the indexs
+<b>bias <- mean(est.th - theta[, 1])</b>
+<b>RMSE <- sd(est.th - theta[, 1])</b>
+							</code></pre>
+
+							<p>After the estimation, we surely want to know the accuracy of our estimators. So, let's plot the estimated abilities and true values. 
+								Also, do not forget to save our results.
+							</p>
+
+							<pre><code># plot estimate theta results -----------------------------
+## generate a density plot
+<b>data <- data.frame(</b>
+  <b>type = rep(x = c("estimated θ", "true θ"), each = nperson),</b>
+  <b>theta = c(est.th, theta[, 1]))</b>
+
+<b>pic <- ggplot(data = data, aes(x = theta, group = type, fill = type)) +</b>
+  <b>geom_density(adjust = 1.5, alpha = 0.4, size = 0.75) +</b>
+  <b>theme(text = element_text(size = 15, family = "sans"),</b>
+        <b>axis.text.x = element_text(size = 15),</b>
+        <b>axis.text.y = element_text(size = 15),</b>
+        <b>legend.title = element_blank())</b>
+<b>pic</b>
+
+# save results --------------------------------------------
+<b>result <- cbind.data.frame(est.th, theta)</b>
+<b>colnames(result) <- c("est_theta", "true_theta")</b>
+<b>write.csv(x = result, file = "est_theta.csv", row.names = FALSE)</b>
+<b>timeCost <- Sys.time() - time.start</b>
+
+# return the results to the console -----------------------
+<b>print(list(bias = bias, RMSE = RMSE, timeCost = timeCost))</b>
+							</code></pre>
+
+							<div class="box alt">
+								<div class="row gtr-50 gtr-uniform">
+									<div class="col-6"><span class="image fit"><img src="images/thumbs/density_MLE.png" alt="" /></span></div>
+								</div><p>The density plot of the results.</p>
+							</div>
+
+							<p>You have done a terrific job! Now you can use these codes to estimate your own theta with your a and b parameters! Also, feel free to ask me any questions.</p>
+
+						</section>
+
+
+						<br/>
+						<br/>
+
+						<ul class="actions">
+							<li><a href="CAT_RT_demo.html" class="button primary">&larr; Previous</a></li>
+						</ul>
+
+					</section>
+				
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="contact">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://twitter.com/HuangYingshi" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://github.com/quantithinker-yingshi" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto:h_yingshi@mail.bnu.edu.cn" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>E-mail: h_yingshi@mail.bnu.edu.cn<br />
+							<br />
+						&copy; 2022 Yingshi</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

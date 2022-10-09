@@ -1,0 +1,424 @@
+<!DOCTYPE HTML>
+<!--
+	I modified this template Strata from HTML5 UP.
+	Many thanks to the author! (html5up.net | @ajlkn)
+
+	Also, I want to express my gratitude to Jianming Dong who provided useful suggestion for my personal page.
+	
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>How to Carry Out A Computerized Adaptive Test with Response time?</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="#" class="image avatar"><img src="images/blog_menu.jpg" alt="menu pic" /></a>
+					<h1><strong><a href="index.html">Home</a></strong><br /></h1>
+					<h1><strong><a href="blog.html">[ Blog ]</a></strong><br /></h1>
+					<h1><strong><a href="talk.html">Talk</a></strong><br /></h1>
+					<h1><strong><a href="research.html">Research</a></strong><br /></h1>
+					<h1><strong><a href="personal_record.html">Personal Record</a></strong><br /></h1>
+				</div>
+			</header>
+
+		<!-- Main -->
+			<div id="main">
+
+				<!-- CAT demo -->
+				
+					<section id="top">
+						<h2>How to Carry Out A Computerized Adaptive Test with Response time?</h2>
+						<p><i>December 13, 2021</i></p>
+						<p>Process data tell a lot. It is a natural thought to utilize response time in computer-based testing 
+              since such data is readily available. Herein, I will illustrate how to incorporate response time in item selection methods for 
+              computerized adaptive testing. In this demo, you can see (a) the generation process for response time based on the lognormal model, 
+              (b) a complete routine for computerized adaptive testing, and (c) the performance of different item selection methods.</p>
+
+						<p>This demo for CAT with response time is based on the article: Choe, E. M., Kern, J. L., & Chang, H. H. (2018). Optimizing the use of response times for item selection in computerized adaptive testing. 
+							<i>Journal of Educational and Behavioral Statistics</i>, <i>43</i>(2), 135-158.</p>
+						<p>Being interested in the Generalized MIT (GMIT) method, I tried to reproduce the results of Study 1 with set1 under the "v = 1, w = 0.5" condition. 
+							Three item selection methods were compared (i.e., Random selection method, maximum Fisher information selection method and GMIT method with v = 1, w = 0.5). It should be noticed that I did not implement any repetition to make it simple.</p>
+
+						<hr />
+
+						<section id = "framework">
+							<h2><li>The project framework</li></h2>
+
+							<ol>
+								<li>Define function</li>
+								<li>Set variables
+								<br/>I set some variables used in this study and generated item and person parameters in this part.</li>
+								<li>Main body
+								<br/>The estimation main body and the computation of seven evaluation criteria (i.e., bias and RMSE of ability, bias and RMSE of speed, M and SD of testing times, mean of testing overlap rate).</li>
+								<li>Save results
+								<br/>Save results and return evaluation indexs and timecost to the console.
+								</li>
+							</ol>
+
+						</section>
+						<hr />
+
+						<section id = "CAT_codes">
+							<h2><li>CAT with response time</li></h2>
+
+							<p>Before we get started, it would be a good idea to clean our environment, record the starting time point, and set our working directory.</p>
+
+							<pre><code><b>rm(list = ls())</b>
+<b>time.start <- Sys.time()</b>
+
+# library packages ----------------------------------------
+## This package can help you to produce samples from multivariate normal distribution
+<b>library(MASS)</b>
+
+# set working directory -----------------------------------
+<b>setwd("C:/Users/HYS/Desktop")</b>         ## You need to modify to your WD</code></pre>
+
+							<p>I introduced nine functions to implement the item selection methods, estimate examinees' abilities and speednesses, etc.
+								<br/>
+								A. function1: <u>itemInfo</u>, compute Fisher information for dichotomous IRT model
+								<br/>
+								B. function2: <u>respon</u>, generate response data for an examinee
+								<br/>
+								C. function3: <u>responTime</u>, generate response time for an examinee
+								<br/>
+								D. function4: <u>selectRandom</u>, Random selection method
+								<br/>
+								E. function5: <u>selectMFI</u>, maximum Fisher information selection method
+								<br/>
+								F. function6: <u>selectGMIT</u>, Generalized MIT method
+								<br/>
+								G. function7: <u>estMLE</u>, estimate theta for an examinee with maximum likelihood method
+								<br/>
+								H. function8: <u>estEAP</u>, estimate theta for an examinee with expected a posteriori method (as an interim substitute of MLE)
+								<br/>
+								I. function9: <u>estTau</u>, estimate speed parameter for an examinee with maximum likelihood method
+							</p>
+
+							<pre><code># define functions ----------------------------------------
+<b>itemInfo <- function(theta, a, b, c = 0, d = 1, D = 1.7){</b>
+  # only for dichotomous IRT model
+  <b>th <- theta</b>
+  <b>it <- cbind(a, b, c, d)</b>
+  <b>a <- it[, 1]</b>
+  <b>b <- it[, 2]</b>
+  <b>c <- it[, 3]</b>
+  <b>d <- it[, 4]</b>
+  <b>D <- D</b>
+  <b>e <- exp(D * a * (th - b))</b>
+  <b>Pi <- c + (d - c) * e/(1 + e)</b>
+  <b>Pi[Pi == 0] <- 1e-10</b>
+  <b>Pi[Pi == 1] <- 1 - 1e-10</b>
+  <b>dPi <- D * a * e * (d - c)/(1 + e)^2</b>
+  
+  <b>P  <- Pi</b>
+  <b>dP <- dPi</b>
+  <b>Q  <- 1 - P</b>
+  <b>Ii <- dP^2/(P * Q)</b>
+<b>}</b>
+
+<b>respon <- function(theta, a, b, c = 0, D = 1.7){</b>
+  ## To generate response data for an examinee
+  <b>ni <- length(a)</b>
+  <b>if (length(c) == 1) {</b>
+    <b>c <- rep(c, ni)</b>
+  <b>}</b>
+  <b>probs <- sapply(1:ni, function(i) {</b>
+    <b>c[i] + (1 - c[i])/(1 + exp(-D * a[i] * (theta - b[i])))</b>
+  <b>})</b>
+  <b>respondata <- ifelse(test = probs >= runif(n = ni, min = 0, max = 1), yes = 1, no = 0)</b>
+<b>}</b>
+
+<b>responTime <- function(tau, alpha, beta){</b>
+  ## To generate response time for an examinee
+  <b>ni <- length(alpha)</b>
+  <b>time <- sapply(1:ni, function(i) {</b>
+    <b>rlnorm(n = 1, meanlog = beta[i] - tau, sdlog = 1/alpha[i])</b>
+  <b>})</b>
+<b>}</b>
+
+<b>selectRandom <- function(itemFlag){</b>
+  ## To select items randomly
+  <b>nitemBank <- length(itemFlag)</b>
+  <b>rand <- sample(seq(1, sum(itemFlag)), 1)</b>
+  <b>id   <- (1:nitemBank)[itemFlag > 0][rand]</b>
+<b>}</b>
+
+<b>selectMFI <- function(itemFlag, theta, a, b, c = 0, d = 1, D = 1.7){</b>
+  ## To select items according to the order of Fisher information at current estimated theta
+  <b>info  <- itemInfo(theta = theta, a = a, b = b, c = c, d = d, D = D)</b>
+  <b>ranks <- rank(info)</b>
+  <b>keepRank <- sort(ranks[itemFlag > 0], decreasing = TRUE)[1]</b>
+  <b>id <- which(ranks == keepRank & itemFlag == 1)</b>
+  
+  ## items are selected randomly from those best ones
+  <b>if (length(id) > 1){</b>
+    <b>id <- sample(id, 1)</b>
+  <b>}else{</b>
+    <b>id <- id</b>
+  <b>}</b>
+<b>}</b>
+
+<b>selectGMIT <- function(itemFlag, v, w, theta, tau, alpha, beta, a, b, c = 0, d = 1, D = 1.7){</b>
+  ## To select items with GMIT method
+  <b>info <- itemInfo(theta = theta, a = a, b = b, c = c, d = d, D = D)</b>
+  <b>ET   <- exp(beta - tau + 1/(2 * alpha^2))</b>
+  <b>deno <- abs(ET - v)^w</b>
+  <b>IT   <- info/deno</b>
+  <b>ranks    <- rank(IT)</b>
+  <b>keepRank <- sort(ranks[itemFlag > 0], decreasing = TRUE)[1]</b>
+  <b>id <- which(ranks == keepRank & itemFlag == 1)</b>
+  
+  ## items are selected randomly from the those best ones
+  <b>if (length(id) > 1){</b>
+    <b>id <- sample(id, 1)</b>
+  <b>}else{</b>
+    <b>id <- id</b>
+  <b>}</b>
+<b>}</b>
+
+<b>estMLE <- function (re, a, b, c = 0, D = 1.7, min = -4, max = 4){</b>
+  ## maximum likelihood estimates of theta for an examinee
+  ## compute log-likelihood function
+  <b>logf <- function(x, r, a, b, c, D) {</b>
+    <b>pi = c + (1 - c)/(1 + exp(-D * a * (x - b)))</b>
+    <b>ll = r * log(pi) + (1 - r) * log(1 - pi)</b>
+    <b>lf = sum(ll)</b>
+    <b>return(lf)</b>
+  <b>}</b>
+  ## find the optimal theta with max log-likelihood function
+  <b>th <- optimize(logf, lower = min, upper = max, maximum = TRUE,</b>
+                 <b>r = re, a = a, b = b, c = c, D = D)$maximum</b>
+  <b>return(th)</b>
+<b>}</b>
+
+<b>estEAP <- function(re, a, b, c = 0, D = 1.7, priorPar = c(0, 1), lower = -4, upper = 4, nqp = 40){</b>
+  ## expected a posteriori estimate of theta for an examinee
+  <b>it <- cbind(a, b, c)</b>
+  <b>X  <- seq(from = lower, to = upper, length = nqp)</b>
+  
+  ## compute likelihood function
+  <b>LL <- function(x, r, it, D) {</b>
+    <b>a <- it[, 1]</b>
+    <b>b <- it[, 2]</b>
+    <b>c <- it[, 3]</b>
+    <b>pi <- c + (1 - c)/(1 + exp(-D * a * (x - b)))</b>
+    <b>lls <- pi^r * (1 - pi)^(1 - r)</b>
+    <b>ll <- 1</b>
+    <b>for (i in 1:length(a)) ll <- ll * lls[i]</b>
+    <b>return(ll)</b>
+  <b>}</b>
+  
+  ## use normal distribution as the prior distribution
+  <b>num <- deno <- NULL</b>
+  <b>for (i in 1:length(X)) num[i] <- X[i] * dnorm(X[i], priorPar[1], priorPar[2]) * LL(X[i], re, it, D)</b>
+  <b>for (i in 1:length(X)) deno[i] <- dnorm(X[i], priorPar[1], priorPar[2]) * LL(X[i], re, it, D)</b>
+  
+  <b>th <- sum(num)/sum(deno)</b>
+  <b>return(th)</b>
+<b>}</b>
+
+<b>estTau <- function(alpha, beta, logt){</b>
+  ## maximum likelihood estimates of speed for an examinee
+  <b>num  <- alpha^2 * (beta - logt)</b>
+  <b>deno <- alpha^2</b>
+  <b>speed <- sum(num)/sum(deno)</b>
+  <b>return(speed)</b>
+<b>}</b></code></pre>
+
+							<p>Then, with the functions defined above, we can begin work on constructing a complete routine for CAT. To achieve this goal, 
+								we should first generate our examinees and the item bank, which are included in the "set variables" section. 
+								Later, a CAT with response time was presented in the "main body" section.
+							</p>
+
+							<pre><code># set variables -------------------------------------------
+<b>nperson <- 1000</b>
+<b>nitemBank <- 500</b>
+<b>total.test.length <- 50</b>
+<b>select.method <- c("Random", "MFI", "GMIT")</b>
+<b>v <- 1</b>
+<b>w <- 0.5</b>
+<b>D <- 1.7</b>
+
+<b>set.seed(13)</b>
+## generate item parameters
+<b>mu1 <- c(0.3, 0, 0)</b>
+<b>sigma1 <- matrix(c(0.1, 0.15, 0,</b>
+                  <b>0.15, 1, 0.25,</b>
+                  <b>0, 0.25, 0.25), 3, 3)</b>
+<b>itempara <- mvrnorm(n = nitemBank, mu1, sigma1)</b>
+<b>a <- exp(itempara[, 1])</b>
+<b>b <- itempara[, 2]</b>
+<b>c <- rbeta(n = nitemBank, 2, 10)</b>
+<b>alpha <- runif(n = nitemBank, min = 2, max = 4)</b>
+<b>beta  <- itempara[, 3]</b>
+
+## generate person parameters
+<b>mu2 <- c(0, 0)</b>
+<b>sigma2 <- matrix(c(1, 0.25, 0.25, 0.25), 2, 2)</b>
+<b>personpara <- mvrnorm(n = nperson, mu2, sigma2)</b>
+<b>theta <- personpara[, 1]</b>
+<b>tau   <- personpara[, 2]</b>
+
+# main body -----------------------------------------------
+<b>estth.end <- esttau.end <- matrix(data = NA, nrow = nperson, ncol = length(select.method))</b>
+<b>test.time <- matrix(data = NA, nrow = nperson, ncol = length(select.method))</b>
+<b>ID.bank   <- matrix(data = NA, nrow = nperson, ncol = total.test.length * length(select.method))</b>
+<b>eval.index <- matrix(data = NA, nrow = 7, ncol = length(select.method))</b>
+
+<b>for (m in 1:length(select.method)){</b>
+  <b>for (i in 1:nperson){</b>
+    <b>test.length <- 0</b>
+    <b>est.th <- est.tau <- 0</b>
+    <b>item.Flag <- rep(1, nitemBank)</b>
+    <b>response  <- response.time <- test <- NULL</b>
+    
+    <b>while(test.length < total.test.length) {</b>
+      ## randomly choose the first item
+      <b>if (test.length == 0) {</b>
+        <b>item.ID <- selectRandom(itemFlag = item.Flag)</b>
+      <b>}else{</b>
+        <b>item.ID <- switch(m, selectRandom(item.Flag),</b>
+                          <b>selectMFI(item.Flag, est.th, a, b, c),</b>
+                          <b>selectGMIT(item.Flag, v, w, est.th, est.tau, alpha, beta, a, b, c))</b>
+      <b>}</b>
+      <b>item.Flag[item.ID] <- 0</b>
+      <b>test.length <- test.length + 1</b>
+      
+      ## generate reponse socre and response time
+      <b>response[test.length] <- respon(theta = theta[i], a = a[item.ID],</b>
+                                      <b>b = b[item.ID], c = c[item.ID])</b>
+      <b>response.time[test.length] <- responTime(tau = tau[i], alpha = alpha[item.ID],</b>
+                                               <b>beta = beta[item.ID])</b>
+      <b>test[test.length] <- item.ID</b>
+      
+      ## estimate theta with MLE method (EAP as an interim substitute)
+      <b>if(test.length >= 5 && sum(response) != 0 && sum(response) != test.length){</b>
+        <b>est.th <- estMLE(re = response, a = a[test], b = b[test], c = c[test], D = D)</b>
+      <b>}else{</b>
+        <b>est.th <- estEAP(re = response, a = a[test], b = b[test], c = c[test], D = D)</b>
+      <b>}</b>
+      
+      ## estimate speed parameter with MLE method
+      <b>est.tau <- estTau(alpha = alpha[test], beta = beta[test], logt = log(response.time))</b>
+    <b>}</b>
+    <b>estth.end[i, m]  <- est.th</b>
+    <b>esttau.end[i, m] <- est.tau</b>
+    <b>test.time[i, m]  <- sum(response.time)</b>
+    
+    ## collect ID of selected items
+    <b>ID.bank[i, (1 + total.test.length * (m - 1)) : (total.test.length * m)] <- test</b>
+    
+    ## progress bar
+    <b>print(paste("Finish: ", sprintf(fmt = '%0.1f', i/nperson * 100), "% for ", nperson,</b>
+                <b>" examinees with ", select.method[m], " item selection method.", sep = ""))</b>
+  <b>}</b>
+  
+  ## compute evaluation indexs
+  <b>eval.index[1, m] <- mean(theta - estth.end[, m])</b>            # bias of theta
+  <b>eval.index[2, m] <- sd(theta - estth.end[, m])</b>              # RMSE of theta
+  <b>eval.index[3, m] <- mean(tau - esttau.end[, m])</b>             # bias of speed parameter
+  <b>eval.index[4, m] <- sd(tau - esttau.end[, m])</b>               # RMSE of speed parameter
+  <b>eval.index[5, m] <- mean(test.time[, m])</b>                    # mean of testing times
+  <b>eval.index[6, m] <- sd(test.time[, m])</b>                      # standard deviation of testing times
+  
+  # compute the mean of testing overlap rate
+  <b>item.overlap <- sapply(1:nitemBank, function(j){</b>
+    <b>used.times <- sum(ID.bank[, (1 + total.test.length * (m - 1)) : (total.test.length * m)] == j)</b>
+    <b>er <- used.times/nperson</b>
+  <b>})</b>
+  <b>eval.index[7, m] <- (nperson * sum(item.overlap^2)) / (total.test.length * (nperson - 1)) - 1/(nperson - 1)</b>
+<b>}</b>
+							</code></pre>
+
+							<p>The final part is to write your results. Let's see whether can you reach the same conclusion as Dr. Choe did. :D
+							</p>
+
+							<pre><code># save results --------------------------------------------
+## for theta
+<b>theta.result <- cbind.data.frame(estth.end, theta)</b>
+<b>colnames(theta.result) <- c("Random", "MFI", "GMIT", "true_theta")</b>
+<b>write.csv(x = theta.result, file = "est_theta.csv", row.names = FALSE)</b>
+
+## for speed parameter
+<b>tau.result <- cbind.data.frame(esttau.end, tau)</b>
+<b>colnames(tau.result) <- c("Random", "MFI", "GMIT", "true_tau")</b>
+<b>write.csv(x = tau.result, file = "est_tau.csv", row.names = FALSE)</b>
+
+## for test time
+<b>test.time.result <- test.time</b>
+<b>colnames(test.time.result) <- c("Random", "MFI", "GMIT")</b>
+<b>write.csv(x = test.time.result, file = "test_time.csv", row.names = FALSE)</b>
+
+## for evaluation indexs
+<b>eval.index.results <- eval.index</b>
+<b>colnames(eval.index.results) <- c("Random", "MFI", "GMIT")</b>
+<b>rownames(eval.index.results) <- c("bias_th", "RMSE_th", "bias_tau", "RMSE_tau",</b>
+                                  <b>"test_time_mean", "test_time_sd", "test_overlap_mean")</b>
+<b>write.csv(x = eval.index.results, file = "evaluation_indexs.csv", row.names = TRUE)</b>
+
+<b>timeCost <- Sys.time() - time.start</b>
+
+## return the results to the console
+<b>print(list(studyResults = eval.index.results, timeCost = timeCost))</b>
+							</code></pre>
+
+							<div class="box alt">
+								<div class="row gtr-50 gtr-uniform">
+									<div class="col-12"><span class="image fit"><img src="images/thumbs/cat_demo_re.jpg" alt="" /></span></div>
+								</div><p>The scatter plot of the results.</p>
+							</div>
+
+							
+							
+
+							<p>Now you can use these codes to try using response times and build your own CAT!
+								<br/>
+								Also, feel free to ask me any questions.</p>
+
+						</section>
+
+						<br/>
+						<br/>
+
+						<ul class="actions">
+							<li><a href="r_quick_guide.html" class="button primary">&larr; Previous</a></li>
+							<li><a href="MLE.html" class="button">Next &rarr;</a></li>
+						</ul>
+
+					</section>
+				
+			</div>
+
+		<!-- Footer -->
+			<footer id="contact">
+				<div class="inner">
+					<ul class="icons">
+						<li><a href="https://twitter.com/HuangYingshi" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="https://github.com/quantithinker-yingshi" class="icon brands fa-github"><span class="label">Github</span></a></li>
+						<li><a href="mailto:h_yingshi@mail.bnu.edu.cn" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+					</ul>
+					<ul class="copyright">
+						<li>E-mail: h_yingshi@mail.bnu.edu.cn<br />
+							<br />
+						&copy; 2022 Yingshi</li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
