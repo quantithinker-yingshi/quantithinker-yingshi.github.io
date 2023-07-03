@@ -44,7 +44,7 @@
 						<p>Generally, the essential purpose of the this article is to provide you with the optimal workflow I found for writing Stan after 
 							lessons paid for with nearly despair and countless hours. I will introduce you two must be done things <strong>*before*</strong> officially 
 							starting to write your .stan file. Next, I will highlight a point that commonly being ignored by many people <strong>*during*</strong> the 
-							estimation process and equip you with knowledge to diagnose possible problems. Following, I will give you a trick to fasten your codes.
+							estimation process and equip you with knowledge to diagnose possible problems. Following, I will give you a strategy to fasten your codes.
 						</p>
 
 						<section>
@@ -76,12 +76,12 @@
 							
 							<p>Here is an example. Let's say I want to write an MCMC program for the deterministic inputs, noisy “and” gate (DINA) model. 
 								(This is merely an illustrative example and unfamiliarity with this model will not impede your understanding.) The formula of 
-							    DINA is as followed, with $0 &lt g_{j} &lt 1-s_{j} &lt 1$ :</p>
-							<p>$$Pr(Y_{ij}=1)=(1-s_{j})^{\eta_{ij}}g_{j}^{1 - \eta_{ij}}$$</p>
-							<p>where $i$ represents the index of examinees with $i = (1, ..., N)$ and $j$ represents the index of items with $j = (1, ..., J)$. 
-								$Y_{ij}$ stands for the response of examinee $i$ on item $j$ with 1 = correct and 0 = incorrect. 
-								$ \boldsymbol{s} = (s_1, s_2, ..., s_j, ..., s_J)$, $ \boldsymbol{g} = (g_1, g_2, ..., g_j, ..., g_J)$ and $ \boldsymbol{\eta} = (0, 1)$. 
-								It would be excellent to generate some $Y_{ij}$ before writing a Stan programme.
+							    DINA is as followed, with 0 &lt g_{j} &lt 1-s_{j} &lt 10 &lt g_{j} &lt 1-s_{j} &lt 1 :</p>
+							<p>Pr(Yij=1)=(1−sj)ηijg1−ηijjPr(Y_{ij}=1)=(1-s_{j})^{\eta_{ij}}g_{j}^{1 - \eta_{ij}}</p>
+							<p>where ii represents the index of examinees with i=(1,...,N)i = (1, ..., N) and jj represents the index of items with j=(1,...,J)j = (1, ..., J). 
+								YijY_{ij} stands for the response of examinee ii on item jj with 1 = correct and 0 = incorrect. 
+								 \boldsymbol{s} = (s_1, s_2, ..., s_j, ..., s_J) \boldsymbol{s} = (s_1, s_2, ..., s_j, ..., s_J),  \boldsymbol{g} = (g_1, g_2, ..., g_j, ..., g_J) \boldsymbol{g} = (g_1, g_2, ..., g_j, ..., g_J) and  \boldsymbol{\eta} = (0, 1) \boldsymbol{\eta} = (0, 1). 
+								It would be excellent to generate some Y_{ij}Y_{ij} before writing a Stan programme.
 							</p>
 
 							<pre><code>
