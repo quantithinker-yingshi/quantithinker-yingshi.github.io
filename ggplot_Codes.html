@@ -396,7 +396,7 @@ p + geom_label(data = annotation1, aes(x = x, y = y, label = label),
           size = 6, family = "serif", label.size = NA)+
  annotate("label", x = -0.3, y = -30, label = expression(italic(theta[u])),
           size = 6, family = "serif", label.size = NA)+
- annotate("label", x = datause$th[which.max(datause$lnL)], y = -30,
+ annotate("label", x = datauseth[which.max(datauseth[which.max(datauselnL)], y = -30,
           label = expression(italic(theta[1])),
           size = 6, family = "serif", label.size = NA)+
 
@@ -404,10 +404,10 @@ p + geom_label(data = annotation1, aes(x = x, y = y, label = label),
 <b># If you do not need to do so, feel free to skip this part.</b>
  annotate("point", x = -0.6, y = datause$lnL[241], size = 5)+
  annotate("point", x = -0.4, y = datause$lnL[261], size = 5)+
- annotate("point", x = datause$th[which.max(datause$lnL)], y = max(datause$lnL), size = 5)+
+ annotate("point", x = datauseth[which.max(datauseth[which.max(datauselnL)], y = max(datause$lnL), size = 5)+
  annotate("point", x = -0.6, y = datause$lnL[241], size = 3, color = "#ffffff")+
  annotate("point", x = -0.4, y = datause$lnL[261], size = 3, color = "#ffffff")+
- annotate("point", x = datause$th[which.max(datause$lnL)], y = max(datause$lnL), size = 3, color = "#ffffff")
+ annotate("point", x = datauseth[which.max(datauseth[which.max(datauselnL)], y = max(datause$lnL), size = 3, color = "#ffffff")
 
 								</code></pre>
 
@@ -508,6 +508,7 @@ ggplot(data = datause, aes(x = theta, group = type, fill = type)) +
 						<br/>
 
 						<ul class="actions">
+							<li><a href="stan_debug.html" class="button primary">&larr; Previous</a></li>
 							<li><a href="r_quick_guide.html" class="button">Next &rarr;</a></li>
 						</ul>
 
