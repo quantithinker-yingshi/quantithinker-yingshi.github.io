@@ -362,22 +362,22 @@ p <- ggplot(datause, aes(x = th, y = lnL)) +
                color = "blue", linetype = 2, size = 1)+
   geom_segment(x = -0.6, xend = -0.6, y = -100, yend = datause$lnL[241],
                color = "blue", linetype = 2, size = 1)+
-  geom_segment(x = datause$th[which.max(datause$lnL)], xend = datause$th[which.max(datause$lnL)],
+  geom_segment(x = datauseth[which.max(datauseth[which.max(datauselnL)], xend = datauseth[which.max(datauseth[which.max(datauselnL)],
                y = -100, yend = max(datause$lnL),
                color = "blue", linetype = 2, size = 1)+
-  geom_segment(x = -0.4, xend = -4, y = datause$lnL[261], yend = datause$lnL[261],
+  geom_segment(x = -0.4, xend = -4, y = datauselnL[261],yend=datauselnL[261], yend = datauselnL[261],
                color = "red", linetype = 1, size = 1)+
-  geom_segment(x = -0.6, xend = -4, y = datause$lnL[241], yend = datause$lnL[241],
+  geom_segment(x = -0.6, xend = -4, y = datauselnL[241],yend=datauselnL[241], yend = datauselnL[241],
                color = "red", linetype = 1, size = 1)+
-  geom_segment(x = datause$th[which.max(datause$lnL)], xend = -4,
-               y = max(datause$lnL), yend = max(datause$lnL),
+  geom_segment(x = datauseth[which.max(datauseth[which.max(datauselnL)], xend = -4,
+               y = max(datauselnL),yend=max(datauselnL), yend = max(datauselnL),
                color = "red", linetype = 1, size = 1)
 
 <b># You are encouraged to define the texts you want to add and their locations before the next step.</b>
 annotation1 <- data.frame(x = c(-3, -3, -3),
-			  y = c(datause$lnL[261], datause$lnL[241], max(datause$lnL)),
+			  y = c(datauselnL[261],datauselnL[261], datauselnL[241], max(datause$lnL)),
 			  label = c("-9.68", "-12.41", "-6.60"))
-annotation2 <- data.frame(x = c(-0.7, -0.3, datause$th[which.max(datause$lnL)]),
+annotation2 <- data.frame(x = c(-0.7, -0.3, datauseth[which.max(datauseth[which.max(datauselnL)]),
 			  y = c(-33, -33, -33),
 			  label = c("(SPRT)", "(SPRT)", "(GLR)"))
 
@@ -523,12 +523,12 @@ ggplot(data = datause, aes(x = theta, group = type, fill = type)) +
 					<ul class="icons">
 						<li><a href="https://twitter.com/HuangYingshi" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 						<li><a href="https://github.com/quantithinker-yingshi" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="mailto:h_yingshi@mail.bnu.edu.cn" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						<li><a href="mailto:yingshi@ucla.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 					<ul class="copyright">
-						<li>E-mail: h_yingshi@mail.bnu.edu.cn<br />
+						<li>E-mail: yingshi@ucla.edu<br />
 							<br />
-						&copy; 2022 Yingshi</li>
+						&copy; 2023 Yingshi</li>
 					</ul>
 				</div>
 			</footer>
