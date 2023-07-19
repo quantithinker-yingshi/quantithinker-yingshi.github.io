@@ -88,9 +88,9 @@
 							<p>$$SAI=exp{-|r[FI_j (\theta_c )]+w\times s-1|};$$ $$i_k=\arg\max\limits_{j\in R_{k-1}}SAI,$$</p>
 							<p>In MIRT case, the equations above become:</p>
 							<p>$$SAI=exp{-|r[det(\boldsymbol{\theta}_c)_{RC}]+w\times s_{RC}-1|},$$</p>
-							<p>where $r[det(\boldsymbol{\theta}_c)_{RC}]$ and $s_{RC} = |\frac{\hat{\xi} - \xi_c}{range\ of\ RC}|$ stand for the percentile rank of the 
+							<p>where r[det(\boldsymbol{\theta}_c)_{RC}]r[det(\boldsymbol{\theta}_c)_{RC}] and s_{RC} = |\frac{\hat{\xi} - \xi_c}{range\ of\ RC}|s_{RC} = |\frac{\hat{\xi} - \xi_c}{range\ of\ RC}| stand for the percentile rank of the 
 								determinant of the Fisher information and the decision-making requirement based on the RC method, respectively. The length of RC 
-								can be simplified as $8/max(cos \boldsymbol{\alpha}_{\xi})$ given a well-defined region(i.e., [-4, 4]) for each $\theta$-coordinate.</p>
+								can be simplified as 8/max(cos \boldsymbol{\alpha}_{\xi})8/max(cos \boldsymbol{\alpha}_{\xi}) given a well-defined region(i.e., [-4, 4]) for each \theta\theta-coordinate.</p>
 
 							<h3><li>Simulation study</li></h3>
 							<h4><li>Data and design</li></h4>
@@ -98,19 +98,19 @@
 							<p>To investigate the performance of the new methods in the multidimensional scenario, 
 								simulations were run for the RC, SAI, timed-RC, and timed-SAI methods (the detailed description of the timed versions can be found <a href="https://doi.org/10.1111/bmsp.12281">here</a>). 
 								All items were designed to load on three dimensions, and three truncated lognormal distributions were used to generate the discrimination parameters for each dimension, 
-								that is, $log(\alpha_{jl}) \sim N(0,1)$ with $\alpha_{jl} \in (0.2,2.5)$ (Chen, Wang, Xin, & Chang, 2017). Therefore, the angles between the RC and $\theta$-coordinates $\boldsymbol{\alpha}_{\xi} = (\alpha_{\xi 1},\alpha_{\xi 2},\alpha_{\xi 3}) = (53.868, 57.037, 53.352)$. 
-								Following the procedures of Man, Harring, Jiao, and Zhan (2019), the ability vectors $\boldsymbol{\theta}$s for 1,000 examinees were drawn from a multivariate standard normal distribution with covariances fixed to 0.3, 
-								and the relationship between ability and speed was identical as the setting in my pervious paper. Also, the easiness $d_j$ and time density $\beta_j$ were generated from a bivariate normal distribution with 
-								mean vector of $\boldsymbol{\mu}_\Gamma = (\mu_d,\mu_\beta) = (0,4)$ and covariance matrix of $\Sigma_\Gamma = \left[\begin{matrix} 1 & 0 \\ 0 & 0.25 \end{matrix}\right]$.</p>
+								that is, log(\alpha_{jl}) \sim N(0,1)log(\alpha_{jl}) \sim N(0,1) with \alpha_{jl} \in (0.2,2.5)\alpha_{jl} \in (0.2,2.5) (Chen, Wang, Xin, & Chang, 2017). Therefore, the angles between the RC and \theta\theta-coordinates \boldsymbol{\alpha}_{\xi} = (\alpha_{\xi 1},\alpha_{\xi 2},\alpha_{\xi 3}) = (53.868, 57.037, 53.352)\boldsymbol{\alpha}_{\xi} = (\alpha_{\xi 1},\alpha_{\xi 2},\alpha_{\xi 3}) = (53.868, 57.037, 53.352). 
+								Following the procedures of Man, Harring, Jiao, and Zhan (2019), the ability vectors \boldsymbol{\theta}\boldsymbol{\theta}s for 1,000 examinees were drawn from a multivariate standard normal distribution with covariances fixed to 0.3, 
+								and the relationship between ability and speed was identical as the setting in my pervious paper. Also, the easiness d_jd_j and time density \beta_j\beta_j were generated from a bivariate normal distribution with 
+								mean vector of \boldsymbol{\mu}_\Gamma = (\mu_d,\mu_\beta) = (0,4)\boldsymbol{\mu}_\Gamma = (\mu_d,\mu_\beta) = (0,4) and covariance matrix of \Sigma_\Gamma = \left[\begin{matrix} 1 & 0 \\ 0 & 0.25 \end{matrix}\right]\Sigma_\Gamma = \left[\begin{matrix} 1 & 0 \\ 0 & 0.25 \end{matrix}\right].</p>
 							<p>Similar to van Groen et al. (2016), the cut score was set to 0 on the RC, and test length was 30. Based on the results shown in previous studies, the weighting parameter was set to 1, 
-								and the centering parameter was set to $v = {1, e^{\mu_\beta - \mu_\tau}/2}$ which resulted in $lnv = {0.0, 3.3}$. As suggested by Nydick (2013), the constrained MLE was used for ability estimation, 
-								confining the space of abilities to $\boldsymbol{\theta} \in [-4,4] \times [-4,4] \times [-4,4]$. And the first four items were randomly selected. 
-								The average for the mean and standard deviation of test-taking time, PCC, and the $\chi^2$ statistic were calculated over 100 replications.</p>
+								and the centering parameter was set to v = {1, e^{\mu_\beta - \mu_\tau}/2}v = {1, e^{\mu_\beta - \mu_\tau}/2} which resulted in lnv = {0.0, 3.3}lnv = {0.0, 3.3}. As suggested by Nydick (2013), the constrained MLE was used for ability estimation, 
+								confining the space of abilities to \boldsymbol{\theta} \in [-4,4] \times [-4,4] \times [-4,4]\boldsymbol{\theta} \in [-4,4] \times [-4,4] \times [-4,4]. And the first four items were randomly selected. 
+								The average for the mean and standard deviation of test-taking time, PCC, and the \chi^2\chi^2 statistic were calculated over 100 replications.</p>
 
 							<h4><li>Results</li></h4>
-							<p>Table 1 presented the evaluation results for different item selection methods under varying $v$ values. In general, the SAI method did equalize the item exposure rates 
+							<p>Table 1 presented the evaluation results for different item selection methods under varying vv values. In general, the SAI method did equalize the item exposure rates 
 								better than the RC method with shorter and more stable test-taking time and acceptable PCC. And the two timed-methods achieved a significant reduction of the mean and SD for test-taking time, 
-								but with slightly lower PCCs. Again, the center parameter v showed a larger impact on $\chi^2$ than on the test time and PCC, indicating that the compensation of $v$ could remedy the gap 
+								but with slightly lower PCCs. Again, the center parameter v showed a larger impact on \chi^2\chi^2 than on the test time and PCC, indicating that the compensation of vv could remedy the gap 
 								between time density and speed. Unlike the unidimensional case, the timed-SAI method possessed slightly higher PCC but little poorer time control ability than the modified timed version.</p>
 
 								<div class="table-wrapper">
@@ -121,7 +121,7 @@
 												<td> </td>
 												<td> </td>
 												<td><strong>PCC</strong></td>
-												<td><strong>$\chi^2$ statistic</strong></td>
+												<td><strong>\chi^2\chi^2 statistic</strong></td>
 												<td><strong>mean of test time</strong></td>
 												<td><strong>SD of test time</strong></td>
 											</tr>
@@ -142,7 +142,7 @@
 												<td>4227.865</td>
 											</tr>
 											<tr>
-												<td>$v=1$</td>
+												<td>v=1v=1</td>
 												<td>timed-RC</td>
 												<td>0.892</td>
 												<td>390.863</td>
@@ -158,7 +158,7 @@
 												<td>1992.096</td>
 											</tr>
 											<tr>
-												<td>$v= \frac {e^{\mu_\beta - \mu_\tau}}{2}$</td>
+												<td>v= \frac {e^{\mu_\beta - \mu_\tau}}{2}v= \frac {e^{\mu_\beta - \mu_\tau}}{2}</td>
 												<td>timed-RC</td>
 												<td>0.887</td>
 												<td>100.897</td>
@@ -183,7 +183,7 @@
 							<p>The simulation results show that the newly proposed item selection methods can counterbalance the item usage and shrink the deviation 
 								and cost of test-taking time at the expense of negligible classification accuracy in multidimensional scenario.</p>
 							<p>It should be noticed that this study is limited to the within-item multidimensionality structure as the non-diagonal elements of 
-								the discriminating parameter matrix $\boldsymbol{\alpha}_j ^T \boldsymbol{\alpha}_j$ will turn out to be zero if the items only 
+								the discriminating parameter matrix αTjαj\boldsymbol{\alpha}_j ^T \boldsymbol{\alpha}_j will turn out to be zero if the items only 
 								load on one dimension, which will make the classification decision only hinge on that dimension. As for such case, 
 								it may be plausible to add a small value like 1e-10 to the unloaded dimension. Simulations can be run in the future to further 
 								investigate the effect of this solution.</p>
@@ -205,12 +205,12 @@
 					<ul class="icons">
 						<li><a href="https://twitter.com/HuangYingshi" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
 						<li><a href="https://github.com/quantithinker-yingshi" class="icon brands fa-github"><span class="label">Github</span></a></li>
-						<li><a href="mailto:h_yingshi@mail.bnu.edu.cn" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						<li><a href="mailto:yingshi@ucla.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
 					</ul>
 					<ul class="copyright">
-						<li>E-mail: h_yingshi@mail.bnu.edu.cn<br />
+						<li>E-mail: yingshi@ucla.edu<br />
 							<br />
-						&copy; 2022 Yingshi</li>
+						&copy; 2023 Yingshi</li>
 					</ul>
 				</div>
 			</footer>
